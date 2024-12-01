@@ -1,0 +1,115 @@
+using System;
+using System.Collections.Generic;
+
+public abstract class Product
+{
+    protected double BasePrice;
+
+    public Product(double basePrice)
+    {
+        BasePrice = basePrice;
+    }
+
+    public abstract double Price { get; }
+
+    public abstract string GetProductInfo();
+}
+
+public class Carrot : Product
+{
+    public Carrot(double basePrice) : base(basePrice) { }
+
+    public override double Price => BasePrice;
+
+    public override string GetProductInfo()
+    {
+        return $"Product: Carrot, Price: {Price}";
+    }
+}
+
+public class Potato : Product
+{
+    public double Count;
+
+    public Potato(double basePrice, double count) : base(basePrice)
+    {
+        Count = count;
+    }
+
+    public override double Price => BasePrice * Count;
+
+    public override string GetProductInfo()
+    {
+        return $"Product: Potato, Price: {BasePrice}, Count: {Count}, Total price: {Price}";
+    }
+}
+
+public class Cucumber : Product
+{
+    public double Count;
+
+    public Cucumber(double basePrice, double count) : base(basePrice)
+    {
+        Count = count;
+    }
+
+    public override double Price => BasePrice * Count;
+
+    public override string GetProductInfo()
+    {
+        return $"Product: Cucumber, Price: {BasePrice}, Count: {Count}, Total price: {Price}";
+    }
+}
+
+public class Tomato : Product
+{
+    public Tomato(double basePrice) : base(basePrice) { }
+
+    public override double Price => BasePrice;
+
+    public override string GetProductInfo()
+    {
+        return $"Product: Tomato, Price: {Price}";
+    }
+}
+
+public class VegetableShop
+{
+    private List<Product> products = new List<Product>();
+
+    public void AddProducts(List<Product> newProducts)
+    {
+        products.AddRange(newProducts);
+    }
+
+    public void PrintProductsInfo()
+    {
+        double totalPrice = 0;
+
+        foreach (var product in products)
+        {
+            Console.WriteLine(product.GetProductInfo());
+            totalPrice += product.Price;
+        }
+
+        Console.WriteLine($"Total products price: {totalPrice}");
+    }
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        var products = new List<Product>()
+        {
+            new Tomato(13),
+            new Cucumber(18, 4),
+            new Potato(17, 2)
+        };
+
+        VegetableShop shop = new VegetableShop();
+        shop.AddProducts(products);
+
+        shop.PrintProductsInfo();
+    }
+}
